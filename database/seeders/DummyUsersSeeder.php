@@ -31,6 +31,12 @@ class DummyUsersSeeder extends Seeder
                 'email' => 'Dosen1@gmail.com',
                 'password' => bcrypt('adm123'),
                 'role' => 'dosen',
+            ],
+            [
+                'name' => 'Pak Dosen2',
+                'email' => 'Dosen2@gmail.com',
+                'password' => bcrypt('adm123'),
+                'role' => 'dosen',
             ]
         ];
 
