@@ -15,16 +15,13 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Kita panggil seeder lain secara berurutan
-        // Urutan ini penting karena ada relasi (Foreign Key)
+        // 1. Buat Fakultas & Departemen DULU
+        $this->call(FakultasDepartemenSeeder::class);
         
-        // 1. Seeder user (yang sudah kamu buat)
+        // 2. BARU Buat User (yang membutuhkan ID Fakultas)
         $this->call(DummyUsersSeeder::class); 
 
-        // 2. Seeder Fakultas & Departemen
-        $this->call(FakultasDepartemenSeeder::class);
-
-        // 3. Seeder Mata Kuliah & Komponen
+        // 3. Terakhir, Buat Mata Kuliah (yang membutuhkan ID Dosen & Departemen)
         $this->call(MataKuliahSeeder::class);
     }
 }

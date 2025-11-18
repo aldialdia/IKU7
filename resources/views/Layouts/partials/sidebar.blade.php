@@ -1,37 +1,72 @@
-<div class="sidebar p-3">
-    <h4 class="text-center mb-4">Metode-Belajar</h4>
+<div class="sidebar">
+    <a href="{{ url('/admin') }}" class="sidebar-brand">
+        SIIKU7
+    </a>
+    
     <ul class="nav nav-pills flex-column">
-
+        
         @if (auth()->user()->role == 'rektorat')
-            <li class="nav-item">
-                <a class="nav-link text-white" href="#">Manajemen Fakultas</a>
+            <li class="nav-item mb-1">
+                <a class="nav-link {{ request()->routeIs('rektorat.dashboard*') ? 'active' : '' }}" 
+                   href="{{ route('rektorat.dashboard') }}">
+                   <i class="bi bi-pie-chart-fill"></i>
+                   <span>Dashboard</span>
+                </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link text-white" href="#">Manajemen Departemen</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link text-white" href="#">Manajemen User</a>
+            <li class="nav-item mb-1">
+                <a class="nav-link {{ request()->routeIs('rektorat.manajemen-fakultas*') ? 'active' : '' }}" 
+                   href="{{ route('rektorat.manajemen-fakultas.index') }}">
+                   <i class="bi bi-building"></i>
+                   <span>Manajemen Akun Fakultas</span>
+                </a>
             </li>
         @endif
 
         @if (auth()->user()->role == 'fakultas')
-            <li class="nav-item">
-                <a class="nav-link text-white" href="#">Manajemen Mata Kuliah</a>
+            <li class="nav-item mb-1">
+                <a class="nav-link {{ request()->is('admin/fakultas') ? 'active' : '' }}" 
+                   href="{{ url('/admin/fakultas') }}">
+                   <i class="bi bi-speedometer2"></i>
+                   <span>Dashboard Fakultas</span>
+                </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link text-white" href="#">Manajemen Dosen</a>
+            <li class="nav-item mb-1">
+                <a class="nav-link {{ request()->routeIs('fakultas.verifikasi*') ? 'active' : '' }}" 
+                   href="{{ route('fakultas.verifikasi.index') }}">
+                   <i class="bi bi-patch-check-fill"></i>
+                   <span>Verifikasi Mata Kuliah</span>
+                </a>
+            </li>
+            <li class="nav-item mb-1">
+                <a class="nav-link {{ request()->routeIs('fakultas.manajemen-dosen*') ? 'active' : '' }}" 
+                   href="{{ route('fakultas.manajemen-dosen.index') }}">
+                   <i class="bi bi-person-video3"></i>
+                   <span>Manajemen Dosen</span>
+                </a>
             </li>
         @endif
 
         @if (auth()->user()->role == 'dosen')
-            <li class="nav-item">
-                <a class="nav-link text-white" href="{{ url('/admin/dosen') }}">Dashboard Dosen</a>
+            <li class="nav-item mb-1">
+                <a class="nav-link {{ request()->is('admin/dosen') ? 'active' : '' }}" 
+                   href="{{ url('/admin/dosen') }}">
+                   <i class="bi bi-speedometer2"></i>
+                   <span>Dashboard Dosen</span>
+                </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link text-white" href="{{ route('dosen.matkul_saya') }}">Mata Kuliah Saya</a>
+            <li class="nav-item mb-1">
+                <a class="nav-link {{ request()->routeIs('dosen.matkul_saya*') ? 'active' : '' }}" 
+                   href="{{ route('dosen.matkul_saya') }}">
+                   <i class="bi bi-journal-bookmark-fill"></i>
+                   <span>Mata Kuliah Saya</span>
+                </a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link text-white" href="{{ route('dosen.input_metode.index') }}">Input Mata Kuliah</a>
+            <li class="nav-item mb-1">
+                <a class="nav-link {{ request()->routeIs('dosen.input_metode*') ? 'active' : '' }}" 
+                   href="{{ route('dosen.input_metode.index') }}">
+                   <i class="bi bi-pencil-square"></i>
+                   <span>Input Mata Kuliah</span>
+                </a>
             </li>
         @endif
 

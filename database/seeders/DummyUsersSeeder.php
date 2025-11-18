@@ -3,8 +3,10 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use App\Models\Fakultas;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
 
 class DummyUsersSeeder extends Seeder
 {
@@ -13,30 +15,37 @@ class DummyUsersSeeder extends Seeder
      */
     public function run(): void
     {
+
+        $fakultas1 = Fakultas::where('Nama_fakultas', 'Fakultas Ilmu Komputer')->first();
+
         $userData = [
             [
                 'name' => 'Admin Rektorat',
                 'email' => 'Rektorat@gmail.com',
                 'password' => bcrypt('adm123'),
                 'role' => 'rektorat',
+                'id_fakultas' => null,
             ],
             [
-                'name' => 'Admin Fakultas1',
-                'email' => 'Fakultas@gmail.com',
+                'name' => 'Admin Fakultas Ilmu Komputer',
+                'email' => 'Fakultas1@gmail.com',
                 'password' => bcrypt('adm123'),
                 'role' => 'fakultas',
+                'id_fakultas' => $fakultas1->id_fakultas,
             ],
             [
                 'name' => 'Pak Dosen1',
                 'email' => 'Dosen1@gmail.com',
                 'password' => bcrypt('adm123'),
                 'role' => 'dosen',
+                'id_fakultas' => $fakultas1->id_fakultas,
             ],
             [
                 'name' => 'Pak Dosen2',
                 'email' => 'Dosen2@gmail.com',
                 'password' => bcrypt('adm123'),
                 'role' => 'dosen',
+                'id_fakultas' => $fakultas1->id_fakultas,
             ]
         ];
 

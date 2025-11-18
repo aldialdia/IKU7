@@ -25,6 +25,7 @@
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                        
                         <thead>
                             <tr>
                                 <th>Kode MK</th>
@@ -32,7 +33,7 @@
                                 <th>Semester</th>
                                 <th>SKS</th>
                                 <th>Metode Pembelajaran</th>
-                                <th>Aksi</th>
+                                <th>Status</th> <th>Aksi</th> 
                             </tr>
                         </thead>
                         <tbody>
@@ -51,6 +52,13 @@
                                     </td>
                                     
                                     <td>
+                                        @if ($mk->verified == 'verified')
+                                            <span class="badge bg-success">Sudah Diverifikasi</span>
+                                        @else
+                                            <span class="badge bg-warning text-dark">Belum Diverifikasi</span>
+                                        @endif
+                                    </td>
+                                    <td>
                                         <a href="{{ route('dosen.matkul_saya.show', $mk->Kode_mk) }}" class="btn btn-sm btn-primary me-1">
                                             Detail
                                         </a>
@@ -65,11 +73,10 @@
                                             <button type="submit" class="btn btn-sm btn-danger">Reset</button>
                                         </form>
                                     </td>
-                                    </tr>
+                                </tr>
                             @empty
                                 <tr>
-                                    <td colspan="6" class="text-center">
-                                        Anda belum mengampu mata kuliah apapun.
+                                    <td colspan="7" class="text-center"> Anda belum mengampu mata kuliah apapun.
                                     </td>
                                 </tr>
                             @endforelse

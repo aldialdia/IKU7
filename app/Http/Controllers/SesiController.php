@@ -30,7 +30,7 @@ class SesiController extends Controller
 
         if(Auth::attempt($infologin)) {
             if(Auth::user()->role == 'rektorat') {
-                return redirect('/admin/rektorat');
+                return redirect()->route('rektorat.dashboard');
             } else if(Auth::user()->role == 'fakultas') {
                 return redirect('/admin/fakultas');
             } else if(Auth::user()->role == 'dosen') {

@@ -29,6 +29,7 @@ class MataKuliah extends Model
         'Semester_mk',
         'SKS',
         'Metode',
+        'verified',
     ];
 
     /**

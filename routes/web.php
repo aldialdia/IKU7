@@ -6,8 +6,12 @@ use Illuminate\Support\Facades\Route;
 
 // Import Controller baru kita
 use App\Http\Controllers\Dosen\MataKuliahSayaController; 
-use App\Http\Controllers\Dosen\InputMetodeController; // <-- TAMBAHKAN INI
-
+use App\Http\Controllers\Dosen\InputMetodeController; 
+use App\Http\Controllers\Fakultas\VerifikasiController;
+use App\Http\Controllers\Fakultas\ManajemenDosenController;
+use App\Http\Controllers\Rektorat\DashboardController;
+use App\Http\Controllers\Rektorat\ManajemenFakultasController;
+use App\Http\Controllers\ProfileController;
 
 Route::middleware(['guest'])->group(function () {
     Route::get('/', [SesiController::class, 'index'])->name('login');
@@ -40,6 +44,42 @@ Route::middleware(['auth'])->group(function () {
 
     });
     
+
+    // === GRUP RUTE ADMIN FAKULTAS ===
+    Route::middleware(['userAkses:fakultas'])->prefix('fakultas')->name('fakultas.')->group(function () {
+        
+        // Rute untuk halaman list verifikasi
+        Route::get('/verifikasi', [VerifikasiController::class, 'index'])->name('verifikasi.index');
+        
+        // --- TAMBAHKAN RUTE DETAIL BARU INI ---
+        Route::get('/verifikasi/{matakuliah}/detail', [VerifikasiController::class, 'show'])->name('verifikasi.show');
+        // --- AKHIR TAMBAHAN ---
+        
+        // Rute untuk aksi memverifikasi (tetap kita pakai)
+        Route::patch('/verifikasi/{matakuliah}/verify', [VerifikasiController::class, 'verify'])->name('verifikasi.verify');
+
+        // Ini akan otomatis membuat rute untuk:
+        // index, create, store, show, edit, update, destroy
+        Route::resource('/manajemen-dosen', ManajemenDosenController::class);
+
+    });
+
+    Route::middleware(['userAkses:rektorat'])->prefix('rektorat')->name('rektorat.')->group(function () {
+        
+        Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+        
+        Route::get('/dashboard/fakultas/{fakultas}', [DashboardController::class, 'showFakultasDetail'])->name('dashboard.fakultas');
+
+        Route::get('/dashboard/departemen/{departemen}', [DashboardController::class, 'showDepartemenDetail'])->name('dashboard.departemen');
+
+        Route::resource('manajemen-fakultas', ManajemenFakultasController::class);
+    });
+
+
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile/update-password', [ProfileController::class, 'updatePassword'])->name('profile.update-password');
+    Route::get('/tentang-aplikasi', [ProfileController::class, 'tentang'])->name('profile.tentang');
+
     // === RUTE API UNTUK DROPDOWN DINAMIS ===
     Route::get('/api/get-departemen', [InputMetodeController::class, 'getDepartemenByFakultas'])
          ->name('api.get_departemen');

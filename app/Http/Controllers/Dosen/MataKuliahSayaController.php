@@ -92,6 +92,9 @@ class MataKuliahSayaController extends Controller
             // 6. Reset (un-claim) mata kuliah (Logika lama)
             $matakuliah->user_id = null;
             $matakuliah->Metode = null;
+
+            $matakuliah->verified = 'unverified';
+            
             $matakuliah->save();
 
             // 7. Simpan perubahan

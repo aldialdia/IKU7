@@ -21,7 +21,8 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
-        'role'
+        'role',
+        'id_fakultas',
     ];
 
     /**
@@ -45,5 +46,20 @@ class User extends Authenticatable
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+    
+    public function mataKuliah()
+    {
+        // (dari langkah kita sebelumnya)
+        return $this->hasMany(MataKuliah::class, 'user_id', 'id');
+    }
+
+    /**
+     * === RELASI BARU ===
+     * Relasi untuk Admin Fakultas: Satu Admin Fakultas belongsTo satu Fakultas.
+     */
+    public function fakultas()
+    {
+        return $this->belongsTo(Fakultas::class, 'id_fakultas', 'id_fakultas');
     }
 }

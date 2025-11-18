@@ -105,11 +105,12 @@ class InputMetodeController extends Controller
             'metode' => 'required|string|in:Biasa,PjBL,CBM',
             'komponen' => 'required|array|min:1',
             'komponen.*.nama' => 'required|string|max:255',
-            'komponen.*.persen' => 'required|integer|min:0|max:100',
+            'komponen.*.persen' => 'required|integer|min:1|max:100',
             'dokumen_pendukung' => 'nullable|array|size:10', // Jika diisi, harus 10
             'dokumen_pendukung.*' => 'file|mimes:pdf,doc,docx,xls,xlsx,ppt,pptx|max:5120', 
         ], [
-            'dokumen_pendukung.size' => 'Jika Anda meng-upload dokumen, jumlahnya harus tepat 10 file.'
+            'dokumen_pendukung.size' => 'Jika Anda meng-upload dokumen, jumlahnya harus tepat 10 file.',
+            'komponen.*.persen.min' => 'Persentase komponen tidak boleh 0. Hapus komponen jika tidak digunakan.',
         ]);
 
         // Validasi 100% dan PjBL
@@ -186,7 +187,9 @@ class InputMetodeController extends Controller
                 }
             }
             // --- AKHIR LOGIKA UPLOAD ---
-
+            $matakuliah->verified = 'unverified';
+            $matakuliah->save();
+            
             DB::commit();
 
         } catch (\Exception $e) {

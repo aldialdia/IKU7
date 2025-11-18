@@ -9,16 +9,27 @@
         <ul class="navbar-nav">
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdownProfile" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                    {{ Auth::user()->Nama ?? Auth::user()->name }} </a>
+                    {{ Auth::user()->name }} </a>
+                
                 <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownProfile">
-                    <li><a class="dropdown-item" href="#">Profil</a></li>
-                    <li><a class="dropdown-item" href="#">Pengaturan</a></li>
+                    <li>
+                        <a class="dropdown-item" href="{{ route('profile.edit') }}">
+                            <i class="bi bi-person-fill me-2"></i>Profil
+                        </a>
+                    </li>
+                    <li>
+                        <a class="dropdown-item" href="{{ route('profile.tentang') }}">
+                            <i class="bi bi-info-circle-fill me-2"></i>Tentang Aplikasi
+                        </a>
+                    </li>
                     <li><hr class="dropdown-divider"></li>
                     <li>
-                        <a class="dropdown-item" href="/logout">Logout</a>
+                        <a class="dropdown-item" href="/logout">
+                            <i class="bi bi-box-arrow-right me-2"></i>Logout
+                        </a>
                     </li>
                 </ul>
-            </li>
+                </li>
         </ul>
     </div>
 </nav>
