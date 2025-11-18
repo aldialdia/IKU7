@@ -21,28 +21,52 @@ class FakultasDepartemenSeeder extends Seeder
         Fakultas::truncate();
         DB::statement('SET FOREIGN_KEY_CHECKS=1;');
 
-        // 1. Buat Fakultas
-        $fakultas1 = Fakultas::create(['Nama_fakultas' => 'Fakultas Ilmu Komputer']);
-        $fakultas2 = Fakultas::create(['Nama_fakultas' => 'Fakultas Ekonomi dan Bisnis']);
+        // 1. Buat Fakultas (representatif, mirip struktur Universitas Andalas)
+        $f_ilkom = Fakultas::create(['Nama_fakultas' => 'Fakultas Teknologi Informasi']);
+        $f_tek = Fakultas::create(['Nama_fakultas' => 'Fakultas Teknik']);
+        $f_ekon = Fakultas::create(['Nama_fakultas' => 'Fakultas Ekonomi dan Bisnis']);
+        $f_hukum = Fakultas::create(['Nama_fakultas' => 'Fakultas Hukum']);
+        $f_pertanian = Fakultas::create(['Nama_fakultas' => 'Fakultas Pertanian']);
+        $f_fkip = Fakultas::create(['Nama_fakultas' => 'Fakultas Keguruan dan Ilmu Pendidikan']);
+        $f_fmipa = Fakultas::create(['Nama_fakultas' => 'Fakultas Matematika dan Ilmu Pengetahuan Alam']);
+        $f_fisip = Fakultas::create(['Nama_fakultas' => 'Fakultas Ilmu Sosial dan Ilmu Politik']);
+        $f_kedokteran = Fakultas::create(['Nama_fakultas' => 'Fakultas Kedokteran']);
 
-        // 2. Buat Departemen untuk Fakultas 1
-        Departemen::create([
-            'id_fakultas' => $fakultas1->id_fakultas,
-            'Nama_departemen' => 'Teknik Informatika'
-        ]);
-        Departemen::create([
-            'id_fakultas' => $fakultas1->id_fakultas,
-            'Nama_departemen' => 'Sistem Informasi'
-        ]);
+        // 2. Buat Departemen / Program studi untuk masing-masing fakultas (contoh umum)
+        // Fakultas Ilmu Komputer
+        $ti = Departemen::create(['id_fakultas' => $f_ilkom->id_fakultas, 'Nama_departemen' => 'Teknik Informatika']);
+        $si = Departemen::create(['id_fakultas' => $f_ilkom->id_fakultas, 'Nama_departemen' => 'Sistem Informasi']);
 
-        // 3. Buat Departemen untuk Fakultas 2
-        Departemen::create([
-            'id_fakultas' => $fakultas2->id_fakultas,
-            'Nama_departemen' => 'Manajemen'
-        ]);
-        Departemen::create([
-            'id_fakultas' => $fakultas2->id_fakultas,
-            'Nama_departemen' => 'Akuntansi'
-        ]);
+        // Fakultas Teknik
+        $tm = Departemen::create(['id_fakultas' => $f_tek->id_fakultas, 'Nama_departemen' => 'Teknik Mesin']);
+        $ts = Departemen::create(['id_fakultas' => $f_tek->id_fakultas, 'Nama_departemen' => 'Teknik Sipil']);
+        $tel = Departemen::create(['id_fakultas' => $f_tek->id_fakultas, 'Nama_departemen' => 'Teknik Elektro']);
+
+        // Fakultas Ekonomi dan Bisnis
+        $man = Departemen::create(['id_fakultas' => $f_ekon->id_fakultas, 'Nama_departemen' => 'Manajemen']);
+        $ak = Departemen::create(['id_fakultas' => $f_ekon->id_fakultas, 'Nama_departemen' => 'Akuntansi']);
+
+        // Fakultas Hukum
+        $hj = Departemen::create(['id_fakultas' => $f_hukum->id_fakultas, 'Nama_departemen' => 'Ilmu Hukum']);
+
+        // Fakultas Pertanian
+        $agr = Departemen::create(['id_fakultas' => $f_pertanian->id_fakultas, 'Nama_departemen' => 'Agroteknologi']);
+
+        // FKIP
+        $p_mtk = Departemen::create(['id_fakultas' => $f_fkip->id_fakultas, 'Nama_departemen' => 'Pendidikan Matematika']);
+        $p_bhs = Departemen::create(['id_fakultas' => $f_fkip->id_fakultas, 'Nama_departemen' => 'Pendidikan Bahasa dan Sastra']);
+
+        // FMIPA
+        $mt = Departemen::create(['id_fakultas' => $f_fmipa->id_fakultas, 'Nama_departemen' => 'Matematika']);
+        $fm = Departemen::create(['id_fakultas' => $f_fmipa->id_fakultas, 'Nama_departemen' => 'Fisika']);
+        $ch = Departemen::create(['id_fakultas' => $f_fmipa->id_fakultas, 'Nama_departemen' => 'Kimia']);
+
+        // FISIP
+        $ilkom = Departemen::create(['id_fakultas' => $f_fisip->id_fakultas, 'Nama_departemen' => 'Ilmu Komunikasi']);
+
+        // Kedokteran
+        $ked = Departemen::create(['id_fakultas' => $f_kedokteran->id_fakultas, 'Nama_departemen' => 'Pendidikan Dokter']);
+
+        // Catatan: Ini contoh representatif — Anda bisa minta saya tambahkan program studi spesifik dari Unand nanti
     }
 }
