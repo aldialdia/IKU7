@@ -25,54 +25,191 @@ class MataKuliahSeeder extends Seeder
         DB::statement('SET FOREIGN_KEY_CHECKS=1;'); // Nyalakan kembali
 
         // 2. Ambil data Dosen & Departemen yang sudah ada dari seeder lain
-        // Kita asumsikan Dosen1@gmail.com ada dari DummyUsersSeeder
         $dosen1 = User::where('email', 'Dosen1@gmail.com')->first();
+
+        // ambil beberapa departemen yang kita buat di FakultasDepartemenSeeder
         $departemenTI = Departemen::where('Nama_departemen', 'Teknik Informatika')->first();
         $departemenSI = Departemen::where('Nama_departemen', 'Sistem Informasi')->first();
+        $departemenTM = Departemen::where('Nama_departemen', 'Teknik Mesin')->first();
+        $departemenTS = Departemen::where('Nama_departemen', 'Teknik Sipil')->first();
+        $departemenMAN = Departemen::where('Nama_departemen', 'Manajemen')->first();
+        $departemenAK = Departemen::where('Nama_departemen', 'Akuntansi')->first();
+        $departemenMT = Departemen::where('Nama_departemen', 'Matematika')->first();
+        $departemenFM = Departemen::where('Nama_departemen', 'Fisika')->first();
+        $departemenAGR = Departemen::where('Nama_departemen', 'Agroteknologi')->first();
+        $departemenPM = Departemen::where('Nama_departemen', 'Pendidikan Matematika')->first();
+        $departemenHJ = Departemen::where('Nama_departemen', 'Ilmu Hukum')->first();
+        $departemenKED = Departemen::where('Nama_departemen', 'Pendidikan Dokter')->first();
+        $departemenIK = Departemen::where('Nama_departemen', 'Ilmu Komunikasi')->first();
 
-        // 3. Validasi: Pastikan data Dosen & Departemen ada
-        if (!$dosen1 || !$departemenTI || !$departemenSI) {
-            // Tampilkan pesan error di terminal jika seeder prasyarat belum jalan
-            $this->command->error('Data Dosen atau Departemen tidak ditemukan.');
-            $this->command->error('Pastikan Anda sudah menjalankan: DummyUsersSeeder & FakultasDepartemenSeeder.');
-            $this->command->error('Hentikan seeder MataKuliah.');
-            return; // Hentikan proses seeder ini
+        // 3. Buat Mata Kuliah contoh (biasanya user_id = null artinya belum diklaim)
+        $created = [];
+
+        if ($departemenTI) {
+            $created[] = MataKuliah::create([
+                'Kode_mk' => 'IF101',
+                'user_id' => $dosen1 ? $dosen1->id : null,
+                'id_departemen' => $departemenTI->id_departemen,
+                'Nama_mk' => 'Algoritma dan Pemrograman',
+                'Semester_mk' => 1,
+                'SKS' => 4,
+                'Metode' => 'Tatap Muka'
+            ]);
+
+            $created[] = MataKuliah::create([
+                'Kode_mk' => 'IF201',
+                'user_id' => null,
+                'id_departemen' => $departemenTI->id_departemen,
+                'Nama_mk' => 'Struktur Data',
+                'Semester_mk' => 3,
+                'SKS' => 3,
+                'Metode' => null
+            ]);
         }
 
-        // 4. Buat Mata Kuliah
-        
-        // MK1: Mata kuliah ini SUDAH DIKLAIM oleh Dosen1
-        $mk1 = MataKuliah::create([
-            'Kode_mk' => 'IF-101',
-            'user_id' => $dosen1->id, // Langsung di-assign ke Dosen1
-            'id_departemen' => $departemenTI->id_departemen,
-            'Nama_mk' => 'Algoritma dan Pemrograman',
-            'Semester_mk' => 1,
-            'SKS' => 4,
-            'Metode' => 'Biasa' // Sudah diatur
-        ]);
+        if ($departemenSI) {
+            $created[] = MataKuliah::create([
+                'Kode_mk' => 'SI301',
+                'user_id' => null,
+                'id_departemen' => $departemenSI->id_departemen,
+                'Nama_mk' => 'Analisis dan Perancangan Sistem',
+                'Semester_mk' => 5,
+                'SKS' => 3,
+                'Metode' => null
+            ]);
+        }
 
-        // MK2: Mata kuliah ini BELUM DIKLAIM
-        $mk2 = MataKuliah::create([
-            'Kode_mk' => 'SI-301',
-            'user_id' => null, // user_id = null artinya "belum diklaim"
-            'id_departemen' => $departemenSI->id_departemen,
-            'Nama_mk' => 'Analisis dan Perancangan Sistem',
-            'Semester_mk' => 3,
-            'SKS' => 3,
-            'Metode' => null // Belum diatur
-        ]);
-        
-        // MK3: Mata kuliah ini BELUM DIKLAIM
-        $mk3 = MataKuliah::create([
-            'Kode_mk' => 'IF-305',
-            'user_id' => null, // user_id = null artinya "belum diklaim"
-            'id_departemen' => $departemenTI->id_departemen,
-            'Nama_mk' => 'Proyek Perangkat Lunak',
-            'Semester_mk' => 3, // Semester 3, sama dengan MK2
-            'SKS' => 4,
-            'Metode' => null // Belum diatur
-        ]);
+        if ($departemenTM) {
+            $created[] = MataKuliah::create([
+                'Kode_mk' => 'TM101',
+                'user_id' => null,
+                'id_departemen' => $departemenTM->id_departemen,
+                'Nama_mk' => 'Teknik Material',
+                'Semester_mk' => 3,
+                'SKS' => 3,
+                'Metode' => null
+            ]);
+        }
+
+        if ($departemenTS) {
+            $created[] = MataKuliah::create([
+                'Kode_mk' => 'TS102',
+                'user_id' => null,
+                'id_departemen' => $departemenTS->id_departemen,
+                'Nama_mk' => 'Mekanika Tanah',
+                'Semester_mk' => 5,
+                'SKS' => 3,
+                'Metode' => null
+            ]);
+        }
+
+        if ($departemenMAN) {
+            $created[] = MataKuliah::create([
+                'Kode_mk' => 'MN101',
+                'user_id' => null,
+                'id_departemen' => $departemenMAN->id_departemen,
+                'Nama_mk' => 'Manajemen Keuangan',
+                'Semester_mk' => 4,
+                'SKS' => 3,
+                'Metode' => null
+            ]);
+        }
+
+        if ($departemenAK) {
+            $created[] = MataKuliah::create([
+                'Kode_mk' => 'AK101',
+                'user_id' => null,
+                'id_departemen' => $departemenAK->id_departemen,
+                'Nama_mk' => 'Akuntansi Dasar',
+                'Semester_mk' => 2,
+                'SKS' => 3,
+                'Metode' => null
+            ]);
+        }
+
+        if ($departemenMT) {
+            $created[] = MataKuliah::create([
+                'Kode_mk' => 'MT101',
+                'user_id' => null,
+                'id_departemen' => $departemenMT->id_departemen,
+                'Nama_mk' => 'Calculus I',
+                'Semester_mk' => 1,
+                'SKS' => 4,
+                'Metode' => null
+            ]);
+        }
+
+        if ($departemenFM) {
+            $created[] = MataKuliah::create([
+                'Kode_mk' => 'FM101',
+                'user_id' => null,
+                'id_departemen' => $departemenFM->id_departemen,
+                'Nama_mk' => 'Fisika Dasar',
+                'Semester_mk' => 1,
+                'SKS' => 4,
+                'Metode' => null
+            ]);
+        }
+
+        if ($departemenAGR) {
+            $created[] = MataKuliah::create([
+                'Kode_mk' => 'AG101',
+                'user_id' => null,
+                'id_departemen' => $departemenAGR->id_departemen,
+                'Nama_mk' => 'Dasar-Dasar Agronomi',
+                'Semester_mk' => 2,
+                'SKS' => 3,
+                'Metode' => null
+            ]);
+        }
+
+        if ($departemenPM) {
+            $created[] = MataKuliah::create([
+                'Kode_mk' => 'PM101',
+                'user_id' => null,
+                'id_departemen' => $departemenPM->id_departemen,
+                'Nama_mk' => 'Metode Pengajaran Matematika',
+                'Semester_mk' => 2,
+                'SKS' => 3,
+                'Metode' => null
+            ]);
+        }
+
+        if ($departemenHJ) {
+            $created[] = MataKuliah::create([
+                'Kode_mk' => 'HJ101',
+                'user_id' => null,
+                'id_departemen' => $departemenHJ->id_departemen,
+                'Nama_mk' => 'Pengantar Hukum',
+                'Semester_mk' => 1,
+                'SKS' => 3,
+                'Metode' => null
+            ]);
+        }
+
+        if ($departemenKED) {
+            $created[] = MataKuliah::create([
+                'Kode_mk' => 'KD101',
+                'user_id' => null,
+                'id_departemen' => $departemenKED->id_departemen,
+                'Nama_mk' => 'Ilmu Kedokteran Dasar',
+                'Semester_mk' => 1,
+                'SKS' => 6,
+                'Metode' => null
+            ]);
+        }
+
+        if ($departemenIK) {
+            $created[] = MataKuliah::create([
+                'Kode_mk' => 'IK101',
+                'user_id' => null,
+                'id_departemen' => $departemenIK->id_departemen,
+                'Nama_mk' => 'Dasar-Dasar Komunikasi',
+                'Semester_mk' => 1,
+                'SKS' => 3,
+                'Metode' => null
+            ]);
+        }
 
         // 5. Buat Komponen Penilaian (Hanya untuk MK yang sudah di-set)
         
