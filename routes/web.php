@@ -12,6 +12,7 @@ use App\Http\Controllers\Fakultas\ManajemenDosenController;
 use App\Http\Controllers\Rektorat\DashboardController;
 use App\Http\Controllers\Rektorat\ManajemenFakultasController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\Rektorat\PenilaianController;
 
 Route::middleware(['guest'])->group(function () {
     Route::get('/', [SesiController::class, 'index'])->name('login');
@@ -72,7 +73,13 @@ Route::middleware(['auth'])->group(function () {
 
         Route::get('/dashboard/departemen/{departemen}', [DashboardController::class, 'showDepartemenDetail'])->name('dashboard.departemen');
 
-        Route::resource('manajemen-fakultas', ManajemenFakultasController::class);
+        Route::resource('manajemen-fakultas', ManajemenFakultasController::class)
+             ->parameters(['manajemen-fakultas' => 'user']);
+
+        Route::get('/penilaian-list', [PenilaianController::class, 'list'])->name('penilaian.list');
+        Route::get('/penilaian/{matakuliah}', [PenilaianController::class, 'index'])->name('penilaian.index');
+        Route::post('/penilaian/{matakuliah}/mahasiswa', [PenilaianController::class, 'storeMahasiswa'])->name('penilaian.store_mahasiswa');
+        Route::post('/penilaian/{matakuliah}/nilai', [PenilaianController::class, 'storeNilai'])->name('penilaian.store_nilai');
     });
 
 

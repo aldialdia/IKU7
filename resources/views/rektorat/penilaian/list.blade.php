@@ -1,0 +1,100 @@
+@extends('layouts.app')
+
+@section('title', 'Daftar Penilaian Mahasiswa')
+
+@section('content')
+<div class="container-fluid">
+    <h1 class="h3 mb-4 text-gray-800">Penilaian Mahasiswa</h1>
+
+    <div class="card shadow mb-4">
+        <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Cari Mata Kuliah</h6>
+        </div>
+        <div class="card-body">
+            <form action="{{ route('rektorat.penilaian.list') }}" method="GET">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Fakultas</label>
+                        <select name="id_fakultas" class="form-select" onchange="this.form.submit()">
+                            <option value="">Semua Fakultas</option>
+                            @foreach($fakultas as $fak)
+                                <option value="{{ $fak->id_fakultas }}" {{ (isset($old_input['id_fakultas']) && $old_input['id_fakultas'] == $fak->id_fakultas) ? 'selected' : '' }}>
+                                    {{ $fak->Nama_fakultas }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-md-4 mb-3">
+                        <label class="form-label">Departemen</label>
+                        <select name="id_departemen" class="form-select">
+                            <option value="">Semua Departemen</option>
+                            @foreach($departemen as $dep)
+                                <option value="{{ $dep->id_departemen }}" {{ (isset($old_input['id_departemen']) && $old_input['id_departemen'] == $dep->id_departemen) ? 'selected' : '' }}>
+                                    {{ $dep->Nama_departemen }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="col-md-2 mb-3">
+                        <label class="form-label">Semester</label>
+                        <select name="semester_mk" class="form-select">
+                            <option value="">Semua</option>
+                            @for($i=1; $i<=8; $i++)
+                                <option value="{{ $i }}" {{ (isset($old_input['semester_mk']) && $old_input['semester_mk'] == $i) ? 'selected' : '' }}>{{ $i }}</option>
+                            @endfor
+                        </select>
+                    </div>
+
+                    <div class="col-md-2 d-flex align-items-end mb-3">
+                        <button type="submit" class="btn btn-primary w-100"> <i class="bi bi-search me-1"></i> Filter</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="card shadow mb-4">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-bordered table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>Kode MK</th>
+                            <th>Mata Kuliah</th>
+                            <th>Departemen</th>
+                            <th>Semester</th>
+                            <th>Dosen</th>
+                            <th>Aksi</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @forelse($mataKuliahList as $mk)
+                            <tr>
+                                <td>{{ $mk->Kode_mk }}</td>
+                                <td>{{ $mk->Nama_mk }}</td>
+                                <td>{{ $mk->departemen->Nama_departemen ?? '-' }}</td>
+                                <td>{{ $mk->Semester_mk }}</td>
+                                <td>{{ $mk->dosen->name ?? '-' }}</td>
+                                <td>
+                                    <a href="{{ route('rektorat.penilaian.index', $mk->Kode_mk) }}" class="btn btn-sm btn-success">
+                                        <i class="bi bi-pencil-square me-1"></i> Input Nilai
+                                    </a>
+                                </td>
+                            </tr>
+                        @empty
+                            <tr>
+                                <td colspan="6" class="text-center">Tidak ada data mata kuliah.</td>
+                            </tr>
+                        @endforelse
+                    </tbody>
+                </table>
+            </div>
+            <div class="d-flex justify-content-end">
+                {{ $mataKuliahList->withQueryString()->links('pagination::bootstrap-5') }}
+            </div>
+        </div>
+    </div>
+</div>
+@endsection

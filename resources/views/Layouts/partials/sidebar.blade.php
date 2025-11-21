@@ -20,6 +20,12 @@
                    <span>Manajemen Akun Fakultas</span>
                 </a>
             </li>
+            <li class="nav-item mb-1">
+                <a class="nav-link {{ request()->routeIs('rektorat.penilaian*') ? 'active' : '' }}" 
+                   href="{{ route('rektorat.penilaian.list') }}">
+                   <i class="bi bi-mortarboard-fill"></i> <span>Penilaian Mahasiswa</span>
+                </a>
+            </li>
         @endif
 
         @if (auth()->user()->role == 'fakultas')
