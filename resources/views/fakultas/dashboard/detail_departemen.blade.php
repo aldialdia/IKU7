@@ -7,12 +7,7 @@
     <nav aria-label="breadcrumb">
       <ol class="breadcrumb">
         <li class="breadcrumb-item">
-            <a href="{{ route('rektorat.dashboard', ['semester' => $old_input['semester'] ?? null]) }}">Dashboard</a>
-        </li>
-        <li class="breadcrumb-item">
-            <a href="{{ route('rektorat.dashboard.fakultas', ['fakultas' => $departemen->fakultas->id_fakultas, 'semester' => $old_input['semester'] ?? null]) }}">
-                {{ $departemen->fakultas->Nama_fakultas }}
-            </a>
+            <a href="{{ route('fakultas.dashboard', ['semester' => $old_input['semester'] ?? null]) }}">Dashboard Fakultas</a>
         </li>
         <li class="breadcrumb-item active" aria-current="page">
             {{ $departemen->Nama_departemen }}
@@ -24,7 +19,7 @@
 
     <div class="card shadow mb-4">
         <div class="card-body">
-            <form action="{{ route('rektorat.dashboard.departemen', $departemen->id_departemen) }}" method="GET">
+            <form action="{{ route('fakultas.dashboard.departemen', $departemen->id_departemen) }}" method="GET">
                 <div class="row">
                     <div class="col-md-10">
                         <label for="semester" class="form-label">Filter Semester</label>
@@ -83,7 +78,7 @@
                                     @endif
                                 </td>
                                 <td>
-                                    <a href="{{ route('rektorat.dashboard.matkul', $mk->Kode_mk) }}" 
+                                    <a href="{{ route('fakultas.dashboard.matkul', $mk->Kode_mk) }}" 
                                        class="btn btn-sm btn-info">
                                         Lihat Detail
                                     </a>

@@ -47,16 +47,16 @@
                 <div class="col-md-4 mb-3">
                     <div class="card h-100">
                         <div class="card-body text-center">
-                            <img src="{{ asset('images/profil-pic.png') }}" class="rounded-circle mb-3" alt="Aldi" width="100" height="100">
-                            <h5 class="card-title">Aldi</h5>
+                            <img src="{{ asset('images/rahil1.jpg') }}" class="rounded-circle mb-3" alt="Rahil Akram Hammad" width="100" height="100">
+                            <h5 class="card-title">Rahil Akram Hammad</h5>
                             <p class="text-muted small">Sistem Informasi</p>
                             <blockquote class="blockquote fst-italic text-success-emphasis bg-success-subtle border-start border-success border-5 p-3 small">
-                                "quote"
+                                "Stay Focus"
                             </blockquote>
-                            <p class="text-muted small mt-2"><i class="bi bi-envelope me-1"></i> email</p>
+                            <p class="text-muted small mt-2"> Programmer</p>
                             <div>
-                                <a href="#" class="text-decoration-none me-2"><i class="bi bi-linkedin" style="font-size: 1.2rem;"></i></a>
-                                <a href="#" class="text-decoration-none me-2"><i class="bi bi-github" style="font-size: 1.2rem;"></i></a>
+                                <a href="https://www.linkedin.com/in/rahil-akram-hammad-784aba243" class="text-decoration-none me-2" target="_blank" rel="noopener noreferrer"><i class="bi bi-linkedin" style="font-size: 1.2rem;"></i></a>
+                                <a href="https://github.com/watdhill" class="text-decoration-none me-2" target="_blank" rel="noopener noreferrer"><i class="bi bi-github" style="font-size: 1.2rem;"></i></a>
                             </div>
                         </div>
                     </div>
@@ -64,16 +64,17 @@
                 <div class="col-md-4 mb-3">
                     <div class="card h-100">
                         <div class="card-body text-center">
-                            <img src="{{ asset('images/profil-pic.png') }}" class="rounded-circle mb-3" alt="Aldi" width="100" height="100">
-                            <h5 class="card-title">Aldi</h5>
+                            <img src="{{ asset('images/revin.jpg') }}" class="rounded-circle mb-3" alt="Revin Pahlevi" width="100" height="100">
+                            <h5 class="card-title">Revin Pahlevi</h5>
                             <p class="text-muted small">Sistem Informasi</p>
                             <blockquote class="blockquote fst-italic text-success-emphasis bg-success-subtle border-start border-success border-5 p-3 small">
-                                "quote"
+                                "Tidak semua hal sesuai harapan, maka bawa santai saja 😏"
                             </blockquote>
-                            <p class="text-muted small mt-2"><i class="bi bi-envelope me-1"></i> email</p>
+                            <p class="text-muted small mt-2"> Project Manager</p>
                             <div>
-                                <a href="#" class="text-decoration-none me-2"><i class="bi bi-linkedin" style="font-size: 1.2rem;"></i></a>
-                                <a href="#" class="text-decoration-none me-2"><i class="bi bi-github" style="font-size: 1.2rem;"></i></a>
+                                <!-- Ganti URL LinkedIn / GitHub berikut untuk Revin -->
+                                <a href="http://www.linkedin.com/in/revin-pahlevi-615778337" class="text-decoration-none me-2" target="_blank" rel="noopener noreferrer"><i class="bi bi-linkedin" style="font-size: 1.2rem;"></i></a>
+                                <a href="https://github.com/RevinPahlevi" class="text-decoration-none me-2" target="_blank" rel="noopener noreferrer"><i class="bi bi-github" style="font-size: 1.2rem;"></i></a>
                             </div>
                         </div>
                     </div>
@@ -81,16 +82,17 @@
                 <div class="col-md-4 mb-3">
                     <div class="card h-100">
                         <div class="card-body text-center">
-                            <img src="{{ asset('images/profil-pic.png') }}" class="rounded-circle mb-3" alt="Aldi" width="100" height="100">
+                            <img src="{{ asset('images/aldi.jpg') }}" class="rounded-circle mb-3" alt="Aldi" width="100" height="100">
                             <h5 class="card-title">Aldi</h5>
                             <p class="text-muted small">Sistem Informasi</p>
                             <blockquote class="blockquote fst-italic text-success-emphasis bg-success-subtle border-start border-success border-5 p-3 small">
-                                "quote"
+                                "Stay hungry, stay foolish"
                             </blockquote>
-                            <p class="text-muted small mt-2"><i class="bi bi-envelope me-1"></i> email</p>
+                            <p class="text-muted small mt-2"> Programmer</p>
                             <div>
-                                <a href="#" class="text-decoration-none me-2"><i class="bi bi-linkedin" style="font-size: 1.2rem;"></i></a>
-                                <a href="#" class="text-decoration-none me-2"><i class="bi bi-github" style="font-size: 1.2rem;"></i></a>
+                                <!-- Ganti URL LinkedIn / GitHub berikut untuk Aldi -->
+                                <a href="https://www.linkedin.com/in/your-linkedin" class="text-decoration-none me-2" target="_blank" rel="noopener noreferrer"><i class="bi bi-linkedin" style="font-size: 1.2rem;"></i></a>
+                                <a href="https://github.com/aldialdia" class="text-decoration-none me-2" target="_blank" rel="noopener noreferrer"><i class="bi bi-github" style="font-size: 1.2rem;"></i></a>
                             </div>
                         </div>
                     </div>
@@ -98,32 +100,34 @@
             </div> <div class="row justify-content-center"> 
                 <div class="col-md-6 mb-3"> <div class="card h-100">
                         <div class="card-body text-center">
-                            <img src="{{ asset('images/profil-pic.png') }}" class="rounded-circle mb-3" alt="Aldi" width="100" height="100">
-                            <h5 class="card-title">Aldi</h5>
+                            <img src="{{ asset('images/zhahra.jpg') }}" class="rounded-circle mb-3" alt="Zhahra Idya Astwoti" width="100" height="100">
+                            <h5 class="card-title">Zhahra Idya Astwoti</h5>
                             <p class="text-muted small">Sistem Informasi</p>
                             <blockquote class="blockquote fst-italic text-success-emphasis bg-success-subtle border-start border-success border-5 p-3 small">
-                                "quote"
+                                "let them"
                             </blockquote>
-                            <p class="text-muted small mt-2"><i class="bi bi-envelope me-1"></i> email</p>
+                            <p class="text-muted small mt-2"> System Analyst</p>
                             <div>
-                                <a href="#" class="text-decoration-none me-2"><i class="bi bi-linkedin" style="font-size: 1.2rem;"></i></a>
-                                <a href="#" class="text-decoration-none me-2"><i class="bi bi-github" style="font-size: 1.2rem;"></i></a>
+                                <!-- Ganti URL LinkedIn / GitHub berikut untuk Zhahra -->
+                                <a href="https://id.linkedin.com/in/zhahra-idhya-astwoti-024317207" class="text-decoration-none me-2" target="_blank" rel="noopener noreferrer"><i class="bi bi-linkedin" style="font-size: 1.2rem;"></i></a>
+                                <a href="https://github.com/zhhraid" class="text-decoration-none me-2" target="_blank" rel="noopener noreferrer"><i class="bi bi-github" style="font-size: 1.2rem;"></i></a>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-6 mb-3"> <div class="card h-100">
                         <div class="card-body text-center">
-                            <img src="{{ asset('images/profil-pic.png') }}" class="rounded-circle mb-3" alt="Aldi" width="100" height="100">
-                            <h5 class="card-title">Aldi</h5>
+                            <img src="{{ asset('images/loly.jpg') }}" class="rounded-circle mb-3" alt="Loly Amelia Nurza" width="100" height="100">
+                            <h5 class="card-title">Loly Amelia Nurza</h5>
                             <p class="text-muted small">Sistem Informasi</p>
                             <blockquote class="blockquote fst-italic text-success-emphasis bg-success-subtle border-start border-success border-5 p-3 small">
-                                "quote"
+                                "it will pass"
                             </blockquote>
-                            <p class="text-muted small mt-2"><i class="bi bi-envelope me-1"></i> email</p>
+                            <p class="text-muted small mt-2"> UI/UX Design</p>
                             <div>
-                                <a href="#" class="text-decoration-none me-2"><i class="bi bi-linkedin" style="font-size: 1.2rem;"></i></a>
-                                <a href="#" class="text-decoration-none me-2"><i class="bi bi-github" style="font-size: 1.2rem;"></i></a>
+                                <!-- Ganti URL LinkedIn / GitHub berikut untuk Loly -->
+                                <a href="https://www.linkedin.com/in/loly-amelia-nurza-7609a6287/" class="text-decoration-none me-2" target="_blank" rel="noopener noreferrer"><i class="bi bi-linkedin" style="font-size: 1.2rem;"></i></a>
+                                <a href="https://github.com/lolyameliaa" class="text-decoration-none me-2" target="_blank" rel="noopener noreferrer"><i class="bi bi-github" style="font-size: 1.2rem;"></i></a>
                             </div>
                         </div>
                     </div>
@@ -137,11 +141,19 @@
             <div class="row">
                 <div class="col-md-6">
                     <strong>Email</strong>
+                    <p class="text-muted"><i class="bi bi-envelope me-2"></i> revinpahlevi@gmail.com</p>
                     <p class="text-muted"><i class="bi bi-envelope me-2"></i> aldiedoank1208@gmail.com</p>
+                    <p class="text-muted"><i class="bi bi-envelope me-2"></i> rahilakram766@gmail.com</p>
+                    <p class="text-muted"><i class="bi bi-envelope me-2"></i> zhahraidhya221@gmail.com</p>
+                    <p class="text-muted"><i class="bi bi-envelope me-2"></i> lolyamelian45@gmail.com</p>
                 </div>
                 <div class="col-md-6">
                     <strong>Telepon</strong>
-                    <p class="text-muted"><i class="bi bi-telephone me-2"></i> +628 </p>
+                    <p class="text-muted"><i class="bi bi-telephone me-2"></i> +6281378133145 </p>
+                    <p class="text-muted"><i class="bi bi-telephone me-2"></i> +6282383490316 </p>
+                    <p class="text-muted"><i class="bi bi-telephone me-2"></i> +6285212619866 </p>
+                    <p class="text-muted"><i class="bi bi-telephone me-2"></i> +6285264676041 </p>
+                    <p class="text-muted"><i class="bi bi-telephone me-2"></i> +6282268251708 </p>
                 </div>
             </div>
         </div>

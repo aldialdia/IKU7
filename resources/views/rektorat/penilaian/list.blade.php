@@ -6,6 +6,16 @@
 <div class="container-fluid">
     <h1 class="h3 mb-4 text-gray-800">Penilaian Mahasiswa</h1>
 
+    @if($errors->any())
+        <div class="alert alert-danger">
+            <ul class="mb-0">
+                @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
+
     <div class="card shadow mb-4">
         <div class="card-header py-3">
             <h6 class="m-0 font-weight-bold text-primary">Cari Mata Kuliah</h6>
@@ -58,15 +68,14 @@
     <div class="card shadow mb-4">
         <div class="card-body">
             <div class="table-responsive">
-                <table class="table table-bordered table-hover">
+                <table class="table table-bordered table-hover align-middle">
                     <thead class="table-light">
                         <tr>
                             <th>Kode MK</th>
                             <th>Mata Kuliah</th>
                             <th>Departemen</th>
                             <th>Semester</th>
-                            <th>Dosen</th>
-                            <th>Aksi</th>
+                            <th>Status Verifikasi</th> <th>Aksi</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -76,11 +85,25 @@
                                 <td>{{ $mk->Nama_mk }}</td>
                                 <td>{{ $mk->departemen->Nama_departemen ?? '-' }}</td>
                                 <td>{{ $mk->Semester_mk }}</td>
-                                <td>{{ $mk->dosen->name ?? '-' }}</td>
+                                
                                 <td>
-                                    <a href="{{ route('rektorat.penilaian.index', $mk->Kode_mk) }}" class="btn btn-sm btn-success">
-                                        <i class="bi bi-pencil-square me-1"></i> Input Nilai
-                                    </a>
+                                    @if ($mk->verified == 'verified')
+                                        <span class="badge bg-success">Terverifikasi</span>
+                                    @else
+                                        <span class="badge bg-warning text-dark">Belum Diverifikasi</span>
+                                    @endif
+                                </td>
+
+                                <td>
+                                    @if ($mk->verified == 'verified')
+                                        <a href="{{ route('rektorat.penilaian.index', $mk->Kode_mk) }}" class="btn btn-sm btn-success">
+                                            <i class="bi bi-pencil-square me-1"></i> Input Nilai
+                                        </a>
+                                    @else
+                                        <button class="btn btn-sm btn-secondary disabled" disabled title="Matkul belum diverifikasi fakultas">
+                                            <i class="bi bi-lock-fill me-1"></i> Terkunci
+                                        </button>
+                                    @endif
                                 </td>
                             </tr>
                         @empty

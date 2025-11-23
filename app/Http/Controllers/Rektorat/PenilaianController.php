@@ -18,32 +18,30 @@ class PenilaianController extends Controller
     {
         // 1. Siapkan Data Filter
         $fakultas = Fakultas::orderBy('Nama_fakultas')->get();
-        $departemen = collect(); // Kosong awal
+        $departemen = collect(); 
 
-        // 2. Query Dasar Mata Kuliah
+        // 2. Query Dasar
         $query = MataKuliah::query()->with(['dosen', 'departemen.fakultas']);
 
-        // 3. Logika Filter
+        // 3. Logika Filter (Sama seperti sebelumnya)
         if ($request->filled('id_fakultas')) {
-            // Ambil departemen sesuai fakultas yg dipilih
             $departemen = Departemen::where('id_fakultas', $request->id_fakultas)->get();
-            
-            // Filter query matkul berdasarkan fakultas (via relasi departemen)
             $query->whereHas('departemen', function($q) use ($request) {
                 $q->where('id_fakultas', $request->id_fakultas);
             });
         }
-
         if ($request->filled('id_departemen')) {
             $query->where('id_departemen', $request->id_departemen);
         }
-
         if ($request->filled('semester_mk')) {
             $query->where('Semester_mk', $request->semester_mk);
         }
 
-        // 4. Ambil Data (Paginate agar tidak berat jika data banyak)
-        $mataKuliahList = $query->orderBy('Nama_mk')->paginate(10);
+        // 4. AMBIL DATA (DENGAN URUTAN BARU)
+        $mataKuliahList = $query
+            ->orderBy('verified', 'desc') // 'verified' (v) akan muncul sebelum 'unverified' (u) jika DESC
+            ->orderBy('Nama_mk', 'asc')   // Lalu urutkan berdasarkan nama (A-Z)
+            ->paginate(10);
 
         return view('rektorat.penilaian.list', [
             'fakultas' => $fakultas,
@@ -55,14 +53,18 @@ class PenilaianController extends Controller
     // Halaman detail penilaian per mata kuliah
     public function index(MataKuliah $matakuliah)
     {
+        if ($matakuliah->verified !== 'verified') {
+            return redirect()->route('rektorat.penilaian.list')
+                             ->withErrors('Mata kuliah "' . $matakuliah->Nama_mk . '" belum diverifikasi oleh Fakultas. Penilaian belum bisa dilakukan.');
+        }
         // Ambil komponen penilaian matkul ini
         $komponen = $matakuliah->komponenPenilaian;
 
         // Ambil mahasiswa yang mengambil matkul ini (lewat tabel KRS)
         // Kita eager load 'nilai' agar query efisien
         $mahasiswaList = Krs::where('kode_mk', $matakuliah->Kode_mk)
-                            ->with(['mahasiswa', 'nilai'])
-                            ->get();
+            ->with(['mahasiswa', 'nilai'])
+            ->get();
 
         return view('rektorat.penilaian.index', [
             'matakuliah' => $matakuliah,
@@ -97,48 +99,42 @@ class PenilaianController extends Controller
     // Menyimpan Nilai
     public function storeNilai(Request $request, MataKuliah $matakuliah)
     {
-        // Loop input nilai yang dikirim dari form tabel
-        $nilaiInput = $request->input('nilai'); // Array [krs_id][komponen_id] => nilai
+        $nilaiAkhirInput = $request->input('nilai_akhir'); 
 
-        if ($nilaiInput) {
-            foreach ($nilaiInput as $krsId => $komponenNilai) {
-                foreach ($komponenNilai as $komponenId => $nilaiAngka) {
-                    // Update atau Create nilai
-                    Nilai::updateOrCreate(
-                        [
-                            'krs_id' => $krsId,
-                            'komponen_id' => $komponenId
-                        ],
-                        [
-                            'nilai_angka' => $nilaiAngka ?? 0
-                        ]
-                    );
+        if ($nilaiAkhirInput) {
+            foreach ($nilaiAkhirInput as $krsId => $nilaiTotal) {
+                
+                // Pastikan angka valid (0-100)
+                $nilaiTotal = max(0, min(100, (float) $nilaiTotal));
+
+                // 1. Hitung Huruf Mutu
+                $hurufMutu = $this->konversiHuruf($nilaiTotal);
+                
+                // 2. Simpan ke tabel KRS (Nilai Akhir & Huruf)
+                $krs = Krs::find($krsId);
+                if ($krs) {
+                    $krs->nilai_akhir = $nilaiTotal;
+                    $krs->nilai_huruf = $hurufMutu;
+                    $krs->save();
+
+                    // 3. DISTRIBUSI KE TABEL NILAI (LOGIKA BARU)
+                    // Nilai yang disimpan adalah HASIL PERKALIAN PERSENTASE
+                    // Contoh: Nilai Akhir 80, Proyek 50% -> Simpan 40.
+                    foreach ($matakuliah->komponenPenilaian as $komponen) {
+                        
+                        // Rumus: Nilai Akhir * (Persentase / 100)
+                        $nilaiBobot = $nilaiTotal * ($komponen->persentase / 100);
+
+                        Nilai::updateOrCreate(
+                            ['krs_id' => $krsId, 'komponen_id' => $komponen->id],
+                            ['nilai_angka' => $nilaiBobot] // Simpan nilai hasil bobot
+                        );
+                    }
                 }
-
-                $krs = Krs::with('nilai.komponen')->find($krsId);
-            // Hitung Total berdasarkan Persentase
-                $totalNilai = 0;
-                foreach ($matakuliah->komponenPenilaian as $komponen) {
-                    // Cari nilai mahasiswa untuk komponen ini
-                    // Kita pakai 'first()' dari collection relasi yang sudah di-load
-                    $nilaiAda = $krs->nilai->where('komponen_id', $komponen->id)->first();
-                    $angka = $nilaiAda ? $nilaiAda->nilai_angka : 0;
-                    
-                    // Rumus: (Nilai * Persentase) / 100
-                    $totalNilai += ($angka * $komponen->persentase / 100);
-                }
-
-                // Konversi ke Huruf Mutu (Helper Function di bawah)
-                $hurufMutu = $this->konversiHuruf($totalNilai);
-
-                // Simpan ke tabel KRS
-                $krs->nilai_akhir = $totalNilai;
-                $krs->nilai_huruf = $hurufMutu;
-                $krs->save();
             }
         }
 
-        return back()->with('success', 'Nilai berhasil disimpan.');
+        return back()->with('success', 'Nilai akhir berhasil disimpan. Poin komponen telah dihitung sesuai persentase.');
     }
 
     private function konversiHuruf($nilai)

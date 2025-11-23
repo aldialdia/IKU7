@@ -6,7 +6,7 @@
 <div class="container-fluid">
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h3 text-gray-800">Penilaian: {{ $matakuliah->Nama_mk }}</h1>
-        <a href="{{ route('rektorat.penilaian.list') }}" class="btn btn-secondary btn-sm">
+        <a href="{{ route('rektorat.dashboard.departemen', ['departemen' => $matakuliah->id_departemen]) }}" class="btn btn-secondary btn-sm">
             &larr; Kembali
         </a>
     </div>
@@ -46,8 +46,9 @@
     </div>
 
     <div class="card shadow mb-4">
-        <div class="card-header py-3 d-flex justify-content-between">
+        <div class="card-header py-3 d-flex justify-content-between align-items-center">
             <h6 class="m-0 font-weight-bold text-primary">Input Nilai Mahasiswa</h6>
+            <span class="badge bg-info text-white">Otomatis Hitung Bobot</span>
         </div>
         <div class="card-body">
             <form action="{{ route('rektorat.penilaian.store_nilai', $matakuliah->Kode_mk) }}" method="POST">
@@ -57,52 +58,66 @@
                         <thead class="table-light text-center">
                             <tr>
                                 <th rowspan="2" class="align-middle">NIM</th>
-                                <th rowspan="2" class="align-middle">Nama</th>
+                                <th rowspan="2" class="align-middle" style="min-width: 150px;">Nama</th>
+                                
+                                <th rowspan="2" class="align-middle bg-warning-subtle border-warning">
+                                    Input Nilai Akhir (0-100)
+                                </th>
+
                                 @foreach ($komponen as $komp)
-                                    <th>{{ $komp->nama_komponen }}</th>
+                                    <th class="text-muted small">{{ $komp->nama_komponen }}</th>
                                 @endforeach
-                                <th rowspan="2" class="align-middle bg-light">Nilai Akhir</th>
+                                
                                 <th rowspan="2" class="align-middle bg-light">Grade</th>
                             </tr>
                             <tr>
                                 @foreach ($komponen as $komp)
-                                    <th class="small text-muted">{{ $komp->persentase }}%</th>
+                                    <th class="text-muted x-small" style="font-size: 0.75rem;">
+                                        Bobot: {{ $komp->persentase }}%
+                                    </th>
                                 @endforeach
                             </tr>
                         </thead>
                         <tbody>
                             @forelse ($mahasiswaList as $krs)
-                                <tr>
-                                    <td>{{ $krs->mahasiswa->nim }}</td>
+                                <tr class="row-mahasiswa" data-id="{{ $krs->id }}">
+                                    <td class="text-center">{{ $krs->mahasiswa->nim }}</td>
                                     <td>{{ $krs->mahasiswa->nama }}</td>
                                     
+                                    <td class="bg-warning-subtle border-warning">
+                                        <input type="number" 
+                                               name="nilai_akhir[{{ $krs->id }}]" 
+                                               value="{{ $krs->nilai_akhir }}" 
+                                               class="form-control text-center fw-bold border-warning input-nilai-akhir"
+                                               data-target="{{ $krs->id }}"
+                                               min="0" max="100" step="0.01" 
+                                               placeholder="0"
+                                               required>
+                                    </td>
+
                                     @foreach ($komponen as $komp)
                                         @php
-                                            // Cari nilai yang sudah tersimpan (jika ada) untuk krs ini & komponen ini
                                             $nilaiAda = $krs->nilai->where('komponen_id', $komp->id)->first();
                                             $nilaiAngka = $nilaiAda ? $nilaiAda->nilai_angka : 0;
                                         @endphp
-                                        <td style="min-width: 80px;">
-                                            <input type="number" 
-                                                   name="nilai[{{ $krs->id }}][{{ $komp->id }}]" 
-                                                   value="{{ $nilaiAngka }}" 
-                                                   class="form-control form-control-sm text-center"
-                                                   min="0" max="100" step="0.01">
+                                        <td style="min-width: 70px;">
+                                            <input type="text" 
+                                                   class="form-control form-control-sm text-center bg-light text-muted input-komponen-{{ $krs->id }}"
+                                                   data-persen="{{ $komp->persentase }}"
+                                                   value="{{ number_format($nilaiAngka, 2) }}" 
+                                                   readonly 
+                                                   disabled>
                                         </td>
                                     @endforeach
 
-                                    <td class="text-center fw-bold bg-light">
-                                        {{ number_format($krs->nilai_akhir, 2) }}
-                                    </td>
-                                    
                                     <td class="text-center fw-bold text-white" 
                                         style="background-color: {{ 
                                             match($krs->nilai_huruf) {
-                                                'A', 'A-' => '#198754', // Hijau
-                                                'B+', 'B', 'B-' => '#0d6efd', // Biru
-                                                'C+', 'C' => '#ffc107', // Kuning (text-dark diatur manual jika perlu)
-                                                'D', 'E' => '#dc3545', // Merah
-                                                default => '#6c757d' // Abu-abu
+                                                'A', 'A-' => '#198754',
+                                                'B+', 'B', 'B-' => '#0d6efd',
+                                                'C+', 'C' => '#ffc107',
+                                                'D', 'E' => '#dc3545',
+                                                default => '#6c757d'
                                             }
                                         }};">
                                         {{ $krs->nilai_huruf ?? '-' }}
@@ -125,8 +140,8 @@
                 
                 @if($mahasiswaList->isNotEmpty())
                     <div class="mt-4 d-flex justify-content-end">
-                        <button type="submit" class="btn btn-success btn-lg">
-                            <i class="bi bi-save me-2"></i>Simpan & Hitung Nilai
+                        <button type="submit" class="btn btn-success btn-lg shadow">
+                            <i class="bi bi-save me-2"></i> Simpan & Distribusikan Nilai
                         </button>
                     </div>
                 @endif
@@ -134,4 +149,35 @@
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const inputs = document.querySelectorAll('.input-nilai-akhir');
+
+        inputs.forEach(input => {
+            // Event saat mengetik
+            input.addEventListener('input', function() {
+                updateKomponen(this);
+            });
+        });
+
+        function updateKomponen(inputElement) {
+            const krsId = inputElement.getAttribute('data-target');
+            const nilaiAkhir = parseFloat(inputElement.value) || 0;
+            
+            // Ambil semua input komponen yang terkait dengan baris mahasiswa ini
+            const komponenInputs = document.querySelectorAll(`.input-komponen-${krsId}`);
+
+            komponenInputs.forEach(kompInput => {
+                const persen = parseFloat(kompInput.getAttribute('data-persen')) || 0;
+                
+                // Rumus: Nilai Akhir * (Persen / 100)
+                const nilaiBobot = nilaiAkhir * (persen / 100);
+                
+                // Update nilai di tampilan
+                kompInput.value = nilaiBobot.toFixed(2); // Tampilkan 2 desimal
+            });
+        }
+    });
+</script>
 @endsection

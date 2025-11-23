@@ -22,9 +22,9 @@
                         </select>
                     </div>
                     <div class="col-md-5">
-                        <label for="tahun" class="form-label">Tahun Akademik (Belum Aktif)</label>
+                        <label for="tahun" class="form-label">-</label>
                         <select class="form-select" id="tahun" name="tahun" disabled>
-                            <option value="">Semua Tahun</option>
+                            <option value="">-</option>
                             </select>
                     </div>
                     <div class="col-md-2 d-flex align-items-end">

@@ -157,4 +157,13 @@ class DashboardController extends Controller
             'old_input' => $request->all()
         ]);
     }
+    public function showMatkulDetail(MataKuliah $matakuliah)
+    {
+        // Load semua relasi yang dibutuhkan untuk tampilan detail
+        $matakuliah->load(['departemen.fakultas', 'dosen', 'komponenPenilaian', 'dokumenPendukung']);
+
+        return view('rektorat.dashboard.detail_matkul', [
+            'matakuliah' => $matakuliah
+        ]);
+    }
 }

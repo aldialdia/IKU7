@@ -32,9 +32,9 @@ class SesiController extends Controller
             if(Auth::user()->role == 'rektorat') {
                 return redirect()->route('rektorat.dashboard');
             } else if(Auth::user()->role == 'fakultas') {
-                return redirect('/admin/fakultas');
+                return redirect()->route('fakultas.dashboard');
             } else if(Auth::user()->role == 'dosen') {
-                return redirect('/admin/dosen');
+                return redirect()->route('dosen.dashboard');
             }
         }else {
             return redirect('')->withErrors('Email atau Password salah')->withInput();

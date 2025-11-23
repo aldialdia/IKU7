@@ -11,43 +11,59 @@
     
     <style>
         body {
+            height: 100vh;
+            overflow: hidden;
             display: flex;
-            min-height: 100vh;
             flex-direction: column;
         }
+
         .main-wrapper {
             display: flex;
             flex: 1;
+            height: 100%;
+            width: 100%;
         }
         
-        /* --- STYLE SIDEBAR BARU --- */
+        /* --- SIDEBAR --- */
         .sidebar {
             width: 280px;
-            min-height: 100vh;
-            /* Latar belakang putih */
+            height: 100%;
             background-color: #ffffff; 
-            color: #333; /* Warna teks default gelap */
-            padding: 1.25rem;
-            /* Tambahkan bayangan/border di kanan */
+            color: #333; 
+            padding: 0; /* Reset padding agar brand bisa mentok ke tepi */
             box-shadow: 0 0 15px rgba(0,0,0,0.05);
             border-right: 1px solid #dee2e6;
+            z-index: 10;
+            display: flex;
+            flex-direction: column; /* Susunan vertikal: Brand di atas, Menu di bawah */
         }
+
+        /* Header Sidebar (Metode Pembelajaran) */
         .sidebar .sidebar-brand {
+            height: 70px; /* TINGGI YANG SAMA DENGAN NAVBAR */
+            display: flex;
+            align-items: center;
+            justify-content: center;
             font-size: 1.5rem;
             font-weight: bold;
-            /* Warna brand biru */
             color: #0d6efd; 
             text-decoration: none;
-            display: block;
-            text-align: center;
-            margin-bottom: 1.5rem;
+            border-bottom: 1px solid #dee2e6; /* Garis pemisah */
+            flex-shrink: 0; /* Agar tidak mengecil */
         }
+
+        /* Container Menu (Scrollable) */
+        .sidebar .sidebar-menu {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 1.25rem; /* Padding dipindah ke sini */
+        }
+
         .sidebar .nav-link {
-            /* Warna teks link default */
             color: #343a40; 
             font-size: 1rem;
             padding: 0.75rem 1rem;
-            border-radius: 0.5rem; /* Sudut melengkung untuk link */
+            border-radius: 0.5rem;
             display: flex;
             align-items: center;
             transition: all 0.2s ease-in-out;
@@ -58,23 +74,42 @@
             width: 20px;
             text-align: center;
         }
-        /* Efek hover: latar biru transparan & teks biru solid */
         .sidebar .nav-link:hover {
             background-color: rgba(13, 110, 253, 0.1); 
             color: #0d6efd;
         }
-        /* Style untuk link yang aktif: latar biru solid, teks putih */
         .sidebar .nav-link.active {
             background-color: #0d6efd;
             color: white; 
             font-weight: 500;
         }
-        /* --- AKHIR STYLE SIDEBAR --- */
 
+        /* --- KONTEN KANAN --- */
+        .app-content {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            height: 100%;
+            min-width: 0;
+        }
+
+        /* Navbar Atas */
+        .app-content .navbar {
+            height: 70px; /* TINGGI YANG SAMA DENGAN SIDEBAR BRAND */
+            padding-top: 0;
+            padding-bottom: 0;
+            border-bottom: 1px solid #dee2e6;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Konten Utama (Scrollable) */
         .content-wrapper {
             flex: 1;
             padding: 2rem;
-            background-color: #f8f9fa; /* Latar belakang konten abu-abu muda */
+            background-color: #f8f9fa;
+            overflow-y: auto; 
+            height: 100%;
         }
     </style>
 </head>
@@ -83,7 +118,7 @@
     <div class="main-wrapper">
         @include('layouts.partials.sidebar')
 
-        <div class="d-flex flex-column w-100">
+        <div class="app-content w-100">
             @include('layouts.partials.navigation')
 
             <main class="content-wrapper">

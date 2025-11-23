@@ -16,7 +16,7 @@ class DummyUsersSeeder extends Seeder
     public function run(): void
     {
 
-        $fakultas1 = Fakultas::where('Nama_fakultas', 'Fakultas Ilmu Komputer')->first();
+        $fakultas1 = Fakultas::where('Nama_fakultas', 'Fakultas Teknologi Informasi')->first();
 
         $userData = [
             [
@@ -27,7 +27,7 @@ class DummyUsersSeeder extends Seeder
                 'id_fakultas' => null,
             ],
             [
-                'name' => 'Admin Fakultas Ilmu Komputer',
+                'name' => 'Admin Fakultas Teknologi Informasi',
                 'email' => 'Fakultas1@gmail.com',
                 'password' => bcrypt('adm123'),
                 'role' => 'fakultas',
