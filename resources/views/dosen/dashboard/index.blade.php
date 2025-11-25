@@ -11,12 +11,22 @@
             <form action="{{ route('dosen.dashboard') }}" method="GET">
                 <div class="row">
                     <div class="col-md-10">
-                        <label class="form-label">Semester</label>
+                        <label class="form-label">Tahun Akademik / Periode</label>
                         <select class="form-select" name="semester" onchange="this.form.submit()">
-                            <option value="">Semua Semester</option>
-                            @for ($i = 1; $i <= 8; $i++)
-                                <option value="{{ $i }}" {{ (isset($old_input['semester']) && $old_input['semester'] == $i) ? 'selected' : '' }}>Semester {{ $i }}</option>
-                            @endfor
+                            <option value="">Semua Periode</option>
+                            @php
+                                $tahunAkademik = [
+                                    'Ganjil 2024/2025',
+                                    'Genap 2024/2025',
+                                    'Ganjil 2023/2024',
+                                    'Genap 2023/2024',
+                                ];
+                            @endphp
+                            @foreach ($tahunAkademik as $th)
+                                <option value="{{ $th }}" {{ (isset($old_input['semester']) && $old_input['semester'] == $th) ? 'selected' : '' }}>
+                                    {{ $th }}
+                                </option>
+                            @endforeach
                         </select>
                     </div>
                     <div class="col-md-2 d-flex align-items-end">
@@ -74,9 +84,14 @@
 document.addEventListener('DOMContentLoaded', () => {
     const pieData = @json($pieChartData['data']);
     const pieLabels = @json($pieChartData['labels']);
-    const barLabels = @json($barChart['labels']);
-    const barPjBL = @json($barChart['data_pjbl']);
-    const barCBM = @json($barChart['data_cbm']);
+    
+    // --- UPDATE DATA BAR CHART ---
+    const barChartData = @json($barChartData);
+    const barLabels = barChartData.map(item => item.Semester_mk); // Label adalah Semester
+    const barPjBL = barChartData.map(item => item.count_pjbl);
+    const barCBM = barChartData.map(item => item.count_cbm);
+    const barBiasa = barChartData.map(item => item.count_biasa); // Tambah ini
+    // -----------------------------
 
     new Chart(document.getElementById('pieChart'), {
         type: 'pie',
@@ -84,13 +99,15 @@ document.addEventListener('DOMContentLoaded', () => {
         options: { responsive: true, maintainAspectRatio: false }
     });
 
+    // --- UPDATE BAR CHART INIT ---
     new Chart(document.getElementById('barChart'), {
         type: 'bar',
         data: {
             labels: barLabels,
             datasets: [
                 { label: 'PjBL', data: barPjBL, backgroundColor: '#ffc107' },
-                { label: 'CBM', data: barCBM, backgroundColor: '#0dcaf0' }
+                { label: 'CBM', data: barCBM, backgroundColor: '#0dcaf0' },
+                { label: 'Biasa', data: barBiasa, backgroundColor: '#6c757d' } // Tambah Dataset Biasa
             ]
         },
         options: { responsive: true, maintainAspectRatio: false, scales: { y: { beginAtZero: true, ticks: { stepSize: 1 } } } }

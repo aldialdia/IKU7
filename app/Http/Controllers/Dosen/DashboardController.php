@@ -41,11 +41,12 @@ class DashboardController extends Controller
         ];
 
         // --- 4. BAR CHART (PER SEMESTER) ---
-        // Karena dosen hanya mengajar beberapa matkul, kita kelompokkan per semester saja
+        // Karena dosen hanya mengajar beberapa matkul, kita kelompokkan per semester (Tahun Akademik)
         $barChartQuery = MataKuliah::where('user_id', $dosenId)
             ->select('Semester_mk')
             ->addSelect(DB::raw('COUNT(DISTINCT CASE WHEN Metode = "PjBL" THEN Kode_mk END) as count_pjbl'))
-            ->addSelect(DB::raw('COUNT(DISTINCT CASE WHEN Metode = "CBM" THEN Kode_mk END) as count_cbm'));
+            ->addSelect(DB::raw('COUNT(DISTINCT CASE WHEN Metode = "CBM" THEN Kode_mk END) as count_cbm'))
+            ->addSelect(DB::raw('COUNT(DISTINCT CASE WHEN Metode = "Biasa" THEN Kode_mk END) as count_biasa'));
 
         if ($selectedSemester) {
             $barChartQuery->where('Semester_mk', $selectedSemester);
@@ -55,16 +56,17 @@ class DashboardController extends Controller
                                       ->orderBy('Semester_mk')
                                       ->get();
 
-        $barChart = [
-            'labels' => $barChartData->map(fn($item) => 'Semester ' . $item->Semester_mk),
-            'data_pjbl' => $barChartData->pluck('count_pjbl'),
-            'data_cbm' => $barChartData->pluck('count_cbm'),
-        ];
+        // Kita tidak perlu lagi membuat variabel $barChart manual di sini
+        // karena View sekarang menggunakan $barChartData langsung di JavaScript.
 
         return view('dosen.dashboard.index', [
             'kpi' => $kpi,
             'pieChartData' => $pieChartData,
-            'barChart' => $barChart,
+            
+            // --- INI YANG SEBELUMNYA HILANG ---
+            'barChartData' => $barChartData, 
+            // ----------------------------------
+            
             'old_input' => $request->all()
         ]);
     }

@@ -27,18 +27,26 @@
             <form action="{{ route('rektorat.dashboard.departemen', $departemen->id_departemen) }}" method="GET">
                 <div class="row">
                     <div class="col-md-10">
-                        <label for="semester" class="form-label">Filter Semester</label>
-                        <select class="form-select" id="semester" name="semester">
-                            <option value="">Semua Semester</option>
-                            @for ($i = 1; $i <= 8; $i++)
-                                <option value="{{ $i }}" {{ (isset($old_input['semester']) && $old_input['semester'] == $i) ? 'selected' : '' }}>
-                                    Semester {{ $i }}
+                        <label for="semester" class="form-label">Tahun Akademik / Periode</label>
+                        <select class="form-select" id="semester" name="semester" onchange="this.form.submit()">
+                            <option value="">Semua Periode</option>
+                            @php
+                                $tahunAkademik = [
+                                    'Ganjil 2024/2025',
+                                    'Genap 2024/2025',
+                                    'Ganjil 2023/2024',
+                                    'Genap 2023/2024',
+                                ];
+                            @endphp
+                            @foreach ($tahunAkademik as $th)
+                                <option value="{{ $th }}" {{ (isset($old_input['semester']) && $old_input['semester'] == $th) ? 'selected' : '' }}>
+                                    {{ $th }}
                                 </option>
-                            @endfor
+                            @endforeach
                         </select>
                     </div>
                     <div class="col-md-2 d-flex align-items-end">
-                        <button type="submit" class="btn btn-primary w-100">Filter</button>
+                        <a href="{{ route('rektorat.dashboard.departemen', $departemen->id_departemen) }}" class="btn btn-secondary w-100">Reset</a>
                     </div>
                 </div>
             </form>
@@ -84,14 +92,17 @@
                                 </td>
                                 <td>
                                     <a href="{{ route('rektorat.dashboard.matkul', $mk->Kode_mk) }}" 
-                                       class="btn btn-sm btn-info">
+                                       class="btn btn-sm btn-info" target="_blank">
                                         Lihat Detail
+                                    </a>
+                                    <a href="{{ route('rektorat.penilaian.index', $mk->Kode_mk) }}" class="btn btn-sm btn-success">
+                                        Input Nilai
                                     </a>
                                 </td>
                             </tr>
                         @empty
                             <tr>
-                                <td colspan="6" class="text-center">Tidak ada mata kuliah untuk departemen/semester ini.</td>
+                                <td colspan="6" class="text-center">Tidak ada mata kuliah untuk departemen/periode ini.</td>
                             </tr>
                         @endforelse
                     </tbody>

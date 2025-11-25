@@ -59,6 +59,7 @@ class DashboardController extends Controller
             ->addSelect(DB::raw('COUNT(DISTINCT CASE WHEN mata_kuliah.Metode = "PjBL" THEN mata_kuliah.Kode_mk END) as count_pjbl'))
             // Hitung CBM
             ->addSelect(DB::raw('COUNT(DISTINCT CASE WHEN mata_kuliah.Metode = "CBM" THEN mata_kuliah.Kode_mk END) as count_cbm'))
+            ->addSelect(DB::raw('COUNT(DISTINCT CASE WHEN mata_kuliah.Metode = "Biasa" THEN mata_kuliah.Kode_mk END) as count_biasa'))
             // Gabungkan tabel
             ->leftJoin('departemen', 'fakultas.id_fakultas', '=', 'departemen.id_fakultas')
             ->leftJoin('mata_kuliah', 'departemen.id_departemen', '=', 'mata_kuliah.id_departemen');

@@ -15,18 +15,26 @@
             <form action="{{ route('rektorat.dashboard.fakultas', $fakultas->id_fakultas) }}" method="GET">
                 <div class="row">
                     <div class="col-md-10">
-                        <label for="semester" class="form-label">Semester</label>
-                        <select class="form-select" id="semester" name="semester">
-                            <option value="">Semua Semester</option>
-                            @for ($i = 1; $i <= 8; $i++)
-                                <option value="{{ $i }}" {{ (isset($old_input['semester']) && $old_input['semester'] == $i) ? 'selected' : '' }}>
-                                    Semester {{ $i }}
+                        <label for="semester" class="form-label">Tahun Akademik / Periode</label>
+                        <select class="form-select" id="semester" name="semester" onchange="this.form.submit()">
+                            <option value="">Semua Periode</option>
+                            @php
+                                $tahunAkademik = [
+                                    'Ganjil 2024/2025',
+                                    'Genap 2024/2025',
+                                    'Ganjil 2023/2024',
+                                    'Genap 2023/2024',
+                                ];
+                            @endphp
+                            @foreach ($tahunAkademik as $th)
+                                <option value="{{ $th }}" {{ (isset($old_input['semester']) && $old_input['semester'] == $th) ? 'selected' : '' }}>
+                                    {{ $th }}
                                 </option>
-                            @endfor
+                            @endforeach
                         </select>
                     </div>
                     <div class="col-md-2 d-flex align-items-end">
-                        <button type="submit" class="btn btn-primary w-100">Filter</button>
+                        <a href="{{ route('rektorat.dashboard.fakultas', $fakultas->id_fakultas) }}" class="btn btn-secondary w-100">Reset</a>
                     </div>
                 </div>
             </form>
@@ -69,8 +77,9 @@
                                             <a href="{{ route('rektorat.dashboard.departemen', [
                                                         'departemen' => $data->id_departemen, 
                                                         'semester' => $old_input['semester'] ?? null
-                                                    ]) }}" class="btn btn-sm btn-primary">
-                                                Lihat Detail Matkul
+                                                    ]) }}" 
+                                               class="btn btn-sm btn-primary">
+                                                Lihat Detail Departemen
                                             </a>
                                         </td>
                                     </tr>
@@ -87,34 +96,20 @@
 
 <script>
 document.addEventListener('DOMContentLoaded', (event) => {
-    // Data dari Controller
     const barLabels = @json($barChart['labels']);
     const barDataPjBL = @json($barChart['data_pjbl']);
     const barDataCBM = @json($barChart['data_cbm']);
     const barDataBiasa = @json($barChart['data_biasa']);
 
-    // Bar Chart
     const barCtx = document.getElementById('barChartDepartemen').getContext('2d');
     new Chart(barCtx, {
         type: 'bar',
         data: {
             labels: barLabels,
             datasets: [
-                {
-                    label: 'PjBL',
-                    data: barDataPjBL,
-                    backgroundColor: 'rgb(255, 193, 7)', // Warning
-                },
-                {
-                    label: 'CBM',
-                    data: barDataCBM,
-                    backgroundColor: 'rgb(13, 202, 240)', // Info
-                },
-                {
-                    label: 'Biasa',
-                    data: barDataBiasa,
-                    backgroundColor: 'rgb(108, 117, 125)', // Secondary
-                }
+                { label: 'PjBL', data: barDataPjBL, backgroundColor: 'rgb(255, 193, 7)' },
+                { label: 'CBM', data: barDataCBM, backgroundColor: 'rgb(13, 202, 240)' },
+                { label: 'Biasa', data: barDataBiasa, backgroundColor: 'rgb(108, 117, 125)' }
             ]
         },
         options: {

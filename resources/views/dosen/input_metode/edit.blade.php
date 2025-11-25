@@ -22,21 +22,24 @@
 
     <form action="{{ route('dosen.input_metode.update', $matakuliah->Kode_mk) }}" method="POST" enctype="multipart/form-data">
         @csrf
-        @method('PUT') <div class="card shadow mb-4">
+        @method('PUT') 
+
+        <div class="card shadow mb-4">
             <div class="card-header py-3">
                 <h6 class="m-0 font-weight-bold text-primary">1. Pilih Metode Pembelajaran</h6>
             </div>
             <div class="card-body">
                 <div class="mb-3">
                     <label for="metode" class="form-label">Metode Pembelajaran</label>
-                    <select class="form-select" id="metode" name="metode" x-model="metodeTerpilih">
+                    <select class="form-select" id="metode" name="metode" x-model="metodeTerpilih" @change="cekMetode()">
                         <option value="Biasa" {{ $matakuliah->Metode == 'Biasa' ? 'selected' : '' }}>Biasa</option>
                         <option value="PjBL" {{ $matakuliah->Metode == 'PjBL' ? 'selected' : '' }}>Project Based Learning (PjBL)</option>
                         <option value="CBM" {{ $matakuliah->Metode == 'CBM' ? 'selected' : '' }}>Case Based Method (CBM)</option>
                     </select>
                 </div>
                 <div x-show="metodeTerpilih === 'PjBL' || metodeTerpilih === 'CBM'" class="alert alert-warning">
-                    Pastikan komponen <strong>"Proyek"</strong> memiliki persentase <strong>minimal 50%</strong>.
+                    <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                    Untuk metode <strong>PjBL/CBM</strong>, komponen <strong>"Proyek"</strong> wajib ada dan persentasenya <strong>minimal 50%</strong>.
                 </div>
             </div>
         </div>
@@ -53,14 +56,35 @@
                     <div class="row mb-2 align-items-center">
                         <div class="col-md-6">
                             <label class="form-label">Nama Komponen</label>
-                            <input type="text" class="form-control" :name="`komponen[${index}][nama]`" x-model="komponen.nama">
+                            
+                            <input type="text" 
+                                   class="form-control" 
+                                   x-model="komponen.nama"
+                                   :name="`komponen[${index}][nama]`" 
+                                   
+                                   /* LOGIKA KUNCI: Jika metode PjBL/CBM DAN namanya 'Proyek', maka Readonly */
+                                   :readonly="(metodeTerpilih === 'PjBL' || metodeTerpilih === 'CBM') && komponen.nama.toLowerCase() === 'proyek'"
+                                   :class="{'bg-light': (metodeTerpilih === 'PjBL' || metodeTerpilih === 'CBM') && komponen.nama.toLowerCase() === 'proyek'}"
+                                   
+                                   required>
                         </div>
                         <div class="col-md-3">
                             <label class="form-label">Persentase (%)</label>
-                            <input type="number" class="form-control" :name="`komponen[${index}][persen]`" x-model.number="komponen.persen" @input="hitungTotal()">
+                            <input type="number" 
+                                   class="form-control" 
+                                   :name="`komponen[${index}][persen]`" 
+                                   x-model.number="komponen.persen" 
+                                   @input="hitungTotal()"
+                                   min="1" max="100"
+                                   required>
                         </div>
                         <div class="col-md-3 d-flex align-items-end">
-                            <button type="button" class="btn btn-danger" @click="hapusKomponen(index)" :disabled="daftarKomponen.length <= 1">
+                            <button type="button" 
+                                    class="btn btn-danger" 
+                                    @click="hapusKomponen(index)" 
+                                    
+                                    /* LOGIKA KUNCI: Disable hapus jika 'Proyek' saat PjBL/CBM, atau jika sisa 1 komponen */
+                                    :disabled="daftarKomponen.length <= 1 || ((metodeTerpilih === 'PjBL' || metodeTerpilih === 'CBM') && komponen.nama.toLowerCase() === 'proyek')">
                                 Hapus
                             </button>
                         </div>
@@ -78,7 +102,6 @@
                 <h6 class="m-0 font-weight-bold text-primary">3. Dokumen Pendukung</h6>
             </div>
             <div class="card-body">
-                
                 <h6 class="mb-3">Dokumen Terupload:</h6>
                 @if ($matakuliah->dokumenPendukung->isEmpty())
                     <p>Belum ada dokumen yang di-upload.</p>
@@ -91,19 +114,17 @@
                         @endforeach
                     </ul>
                 @endif
-                
                 <hr>
-
                 <div class="mb-3">
                     <label for="dokumen" class="form-label">Upload Dokumen Baru (Pilih 10 file)</label>
                     <input class="form-control" type="file" id="dokumen" name="dokumen_pendukung[]" multiple>
                 </div>
                 <small class="text-muted">
-                    Aturan: Jika Anda ingin menambah file, Anda harus memilih **tepat 10 file** sekaligus.<br>
-                    File yang sudah ada tidak akan terhapus saat Anda meng-upload file baru.
+                    Aturan: Jika Anda ingin menambah file, Anda harus memilih **tepat 10 file** sekaligus.
                 </small>
             </div>
         </div>
+
         <button type="submit" class="btn btn-primary mb-4">
             Simpan Data
         </button>
@@ -116,16 +137,19 @@
         return {
             metodeTerpilih: '{{ old('metode', $matakuliah->Metode ?? 'Biasa') }}',
             totalPersen: 0,
-            daftarKomponen: @json(old('komponen', $komponen->map(fn($k) => ['nama' => $k->nama_komponen, 'persen' => $k->persentase]))) ,
+            daftarKomponen: @json(old('komponen', $komponen->map(fn($k) => ['nama' => $k->nama_komponen, 'persen' => $k->persentase]))),
             
             init() {
                 this.hitungTotal();
+                this.cekMetode(); // Cek saat halaman dimuat pertama kali
             },
+
             hitungTotal() {
                 this.totalPersen = this.daftarKomponen.reduce((total, komponen) => {
                     return total + (parseInt(komponen.persen) || 0);
                 }, 0);
             },
+
             tambahKomponen() {
                 this.daftarKomponen.push({
                     nama: '',
@@ -133,11 +157,42 @@
                 });
                 this.hitungTotal();
             },
+
             hapusKomponen(index) {
+                // Cek apakah yang mau dihapus adalah Proyek saat mode PjBL/CBM
+                const komp = this.daftarKomponen[index];
+                if ((this.metodeTerpilih === 'PjBL' || this.metodeTerpilih === 'CBM') && komp.nama.toLowerCase() === 'proyek') {
+                    alert('Komponen Proyek tidak boleh dihapus pada metode PjBL/CBM.');
+                    return;
+                }
+
                 if (this.daftarKomponen.length > 1) {
                     this.daftarKomponen.splice(index, 1);
                     this.hitungTotal();
                 }
+            },
+
+            // --- LOGIKA BARU: CEK & TAMBAH PROYEK OTOMATIS ---
+            cekMetode() {
+                if (this.metodeTerpilih === 'PjBL' || this.metodeTerpilih === 'CBM') {
+                    // 1. Cari apakah sudah ada komponen "Proyek" (case-insensitive)
+                    const indexProyek = this.daftarKomponen.findIndex(k => k.nama.toLowerCase() === 'proyek');
+
+                    // 2. Jika BELUM ada, tambahkan otomatis di urutan pertama
+                    if (indexProyek === -1) {
+                        this.daftarKomponen.unshift({
+                            nama: 'Proyek',
+                            persen: 50 // Set default minimal 50
+                        });
+                    } else {
+                        // Jika SUDAH ada, pastikan namanya pas "Proyek" (opsional, biar rapi)
+                        this.daftarKomponen[indexProyek].nama = 'Proyek';
+                    }
+                }
+                // Jika metode "Biasa", kita tidak perlu menghapus "Proyek", biarkan user yang memutuskan.
+                // Tapi tombol hapus & edit nama akan otomatis aktif kembali (lihat binding :readonly & :disabled di HTML).
+                
+                this.hitungTotal();
             }
         }
     }

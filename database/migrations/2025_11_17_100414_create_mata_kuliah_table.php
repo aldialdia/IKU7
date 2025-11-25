@@ -17,7 +17,7 @@ return new class extends Migration
             $table->foreignId('user_id')->nullable()->constrained('users')->onDelete('set null');
             $table->foreignId('id_departemen')->constrained('departemen', 'id_departemen')->onDelete('cascade');
             $table->string('Nama_mk');
-            $table->integer('Semester_mk');
+            $table->string('Semester_mk');
             $table->integer('SKS');
             $table->string('Metode')->nullable(); // PjBL, CBM, atau Biasa
             $table->timestamps();

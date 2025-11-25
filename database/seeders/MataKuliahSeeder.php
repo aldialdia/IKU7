@@ -51,7 +51,7 @@ class MataKuliahSeeder extends Seeder
                 'user_id' => $dosen1 ? $dosen1->id : null,
                 'id_departemen' => $departemenTI->id_departemen,
                 'Nama_mk' => 'Algoritma dan Pemrograman',
-                'Semester_mk' => 1,
+                'Semester_mk' => 'Ganjil 2024/2025',
                 'SKS' => 4,
                 'Metode' => 'Biasa'
             ]);
@@ -61,7 +61,7 @@ class MataKuliahSeeder extends Seeder
                 'user_id' => null,
                 'id_departemen' => $departemenTI->id_departemen,
                 'Nama_mk' => 'Struktur Data',
-                'Semester_mk' => 3,
+                'Semester_mk' => 'Ganjil 2024/2025',
                 'SKS' => 3,
                 'Metode' => null
             ]);
@@ -73,7 +73,7 @@ class MataKuliahSeeder extends Seeder
                 'user_id' => null,
                 'id_departemen' => $departemenSI->id_departemen,
                 'Nama_mk' => 'Analisis dan Perancangan Sistem',
-                'Semester_mk' => 5,
+                'Semester_mk' => 'Ganjil 2024/2025',
                 'SKS' => 3,
                 'Metode' => null
             ]);
@@ -85,7 +85,7 @@ class MataKuliahSeeder extends Seeder
                 'user_id' => null,
                 'id_departemen' => $departemenTM->id_departemen,
                 'Nama_mk' => 'Teknik Material',
-                'Semester_mk' => 3,
+                'Semester_mk' => 'Ganjil 2024/2025',
                 'SKS' => 3,
                 'Metode' => null
             ]);
@@ -97,7 +97,7 @@ class MataKuliahSeeder extends Seeder
                 'user_id' => null,
                 'id_departemen' => $departemenTS->id_departemen,
                 'Nama_mk' => 'Mekanika Tanah',
-                'Semester_mk' => 5,
+                'Semester_mk' => 'Ganjil 2024/2025',
                 'SKS' => 3,
                 'Metode' => null
             ]);
@@ -109,7 +109,7 @@ class MataKuliahSeeder extends Seeder
                 'user_id' => null,
                 'id_departemen' => $departemenMAN->id_departemen,
                 'Nama_mk' => 'Manajemen Keuangan',
-                'Semester_mk' => 4,
+                'Semester_mk' => 'Ganjil 2024/2025',
                 'SKS' => 3,
                 'Metode' => null
             ]);
@@ -121,7 +121,7 @@ class MataKuliahSeeder extends Seeder
                 'user_id' => null,
                 'id_departemen' => $departemenAK->id_departemen,
                 'Nama_mk' => 'Akuntansi Dasar',
-                'Semester_mk' => 2,
+                'Semester_mk' => 'Ganjil 2024/2025',
                 'SKS' => 3,
                 'Metode' => null
             ]);
@@ -133,7 +133,7 @@ class MataKuliahSeeder extends Seeder
                 'user_id' => null,
                 'id_departemen' => $departemenMT->id_departemen,
                 'Nama_mk' => 'Calculus I',
-                'Semester_mk' => 1,
+                'Semester_mk' => 'Ganjil 2024/2025',
                 'SKS' => 4,
                 'Metode' => null
             ]);
@@ -145,7 +145,7 @@ class MataKuliahSeeder extends Seeder
                 'user_id' => null,
                 'id_departemen' => $departemenFM->id_departemen,
                 'Nama_mk' => 'Fisika Dasar',
-                'Semester_mk' => 1,
+                'Semester_mk' => 'Ganjil 2024/2025',
                 'SKS' => 4,
                 'Metode' => null
             ]);
@@ -157,7 +157,7 @@ class MataKuliahSeeder extends Seeder
                 'user_id' => null,
                 'id_departemen' => $departemenAGR->id_departemen,
                 'Nama_mk' => 'Dasar-Dasar Agronomi',
-                'Semester_mk' => 2,
+                'Semester_mk' => 'Ganjil 2024/2025',
                 'SKS' => 3,
                 'Metode' => null
             ]);
@@ -169,7 +169,7 @@ class MataKuliahSeeder extends Seeder
                 'user_id' => null,
                 'id_departemen' => $departemenPM->id_departemen,
                 'Nama_mk' => 'Metode Pengajaran Matematika',
-                'Semester_mk' => 2,
+                'Semester_mk' => 'Ganjil 2024/2025',
                 'SKS' => 3,
                 'Metode' => null
             ]);
@@ -181,7 +181,7 @@ class MataKuliahSeeder extends Seeder
                 'user_id' => null,
                 'id_departemen' => $departemenHJ->id_departemen,
                 'Nama_mk' => 'Pengantar Hukum',
-                'Semester_mk' => 1,
+                'Semester_mk' => 'Ganjil 2024/2025',
                 'SKS' => 3,
                 'Metode' => null
             ]);
@@ -193,7 +193,7 @@ class MataKuliahSeeder extends Seeder
                 'user_id' => null,
                 'id_departemen' => $departemenKED->id_departemen,
                 'Nama_mk' => 'Ilmu Kedokteran Dasar',
-                'Semester_mk' => 1,
+                'Semester_mk' => 'Ganjil 2024/2025',
                 'SKS' => 6,
                 'Metode' => null
             ]);
@@ -205,7 +205,7 @@ class MataKuliahSeeder extends Seeder
                 'user_id' => null,
                 'id_departemen' => $departemenIK->id_departemen,
                 'Nama_mk' => 'Dasar-Dasar Komunikasi',
-                'Semester_mk' => 1,
+                'Semester_mk' => 'Ganjil 2024/2025',
                 'SKS' => 3,
                 'Metode' => null
             ]);
